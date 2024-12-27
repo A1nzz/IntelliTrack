@@ -8,15 +8,35 @@
 </head>
 <body>
   <div class="tabs">
-    <button class="tab-button" data-tab="tab1">Вкладка 1</button>
-    <button class="tab-button" data-tab="tab2">Вкладка 2</button>
-    <button class="tab-button" data-tab="tab3">Вкладка 3</button>
-    <button class="tab-button" data-tab="tab4">Вкладка 4</button>
+    <button class="tab-button" data-tab="tab1">Tracker</button>
+    <button class="tab-button" data-tab="tab2">Categories</button>
+    <button class="tab-button" data-tab="tab3">Blocker</button>
+    <button class="tab-button" data-tab="tab4">Recomendations</button>
   </div>
   
   <div class="tab-content">
-    <div id="tab1" class="tab active">Содержимое Вкладки 1</div>
-    <div id="tab2" class="tab">Содержимое Вкладки 2</div>
+    <div id="tab1" class="tab active">
+      <h2>Посещенные сайты</h2>
+      <ul id="siteList"></ul>
+    </div>
+
+    <div id="tab2" class="tab">
+      <div class="category">
+          <h2>Study</h2>
+          <ul class="site-list" id="category1"></ul>
+          <button onclick="addSite('category1')">Добавить сайт</button>
+      </div>
+      <div class="category">
+          <h2>Work</h2>
+          <ul class="site-list" id="category2"></ul>
+          <button onclick="addSite('category2')">Добавить сайт</button>
+      </div>
+      <div class="category">
+          <h2>Entertainment</h2>
+          <ul class="site-list" id="category3"></ul>
+          <button onclick="addSite('category3')">Добавить сайт</button>
+      </div>
+    </div>
     <div id="tab3" class="tab">Содержимое Вкладки 3</div>
     <div id="tab4" class="tab">Содержимое Вкладки 4</div>
   </div>

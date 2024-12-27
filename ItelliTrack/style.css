@@ -52,3 +52,22 @@ body {
   .tab.active {
     display: block;
   }
+
+
+  .site-item {
+    display: flex;
+    align-items: center; /* Центрирование иконки и текста */
+    padding: 8px;
+    border-bottom: 1px solid #e0e0e0; /* Легкая разделительная линия */
+  }
+  
+  .site-item img {
+    width: 20px; /* Ширина иконки */
+    height: 20px; /* Высота иконки */
+    margin-right: 10px; /* Отступ между иконкой и текстом */
+    border-radius: 3px; /* Закругленные края иконок */
+  }
+  
+  .site-item:last-child {
+    border-bottom: none; /* Убрать нижнюю границу у последнего элемента */
+  }
