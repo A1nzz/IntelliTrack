@@ -35,7 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Обновление данных каждые 5 секунд
   setInterval(loadTimeSpent, 1000);
 
   // Логика переключения вкладок
@@ -60,4 +59,111 @@ document.addEventListener('DOMContentLoaded', () => {
       button.classList.add('active');
     });
   });
+
+
+  // Модальное окно
+  const modal = document.getElementById("modal");
+  const closeModal = document.getElementById("closeModal");
+  const saveSiteButton = document.getElementById("saveSite");
+  let currentCategoryId = null;
+
+  // Обработчик для кнопок добавления сайтов
+  document.querySelectorAll('.add-site-button').forEach(button => {
+    button.addEventListener('click', () => {
+      currentCategoryId = button.getAttribute('data-category');
+      modal.style.display = "block";
+    });
+  });
+
+  closeModal.onclick = () => {
+    modal.style.display = "none"; // Закрываем модальное окно
+  };
+
+  window.onclick = (event) => {
+    if (event.target === modal) {
+      modal.style.display = "none"; // Закрываем при клике вне окна
+    }
+  };
+
+  saveSiteButton.onclick = () => {
+    const url = document.getElementById("siteUrl").value.trim(); // Убираем пробелы
+    const urlPattern = /^(ftp|http|https):\/\/(www\.)?[\w-]+\.[a-z]{2,}\/?([^ "]*)$/; 
+    
+    if (url && urlPattern.test(url)) { // Проверка на пустоту и корректный URL
+        const list = document.getElementById(currentCategoryId);
+        const listItem = document.createElement('li');
+
+        // Создаем элемент для URL
+        const siteText = document.createTextNode(url);
+        listItem.appendChild(siteText);
+
+        // Создаем кнопку удаления
+        const deleteButton = document.createElement('button');
+        deleteButton.innerHTML = '🗑️'; // Иконка корзины
+        deleteButton.className = 'delete-button';
+
+        // Обработчик события для удаления сайта
+        deleteButton.onclick = () => {
+            list.removeChild(listItem); // Удаляем элемент из списка
+            removeSiteFromStorage(currentCategoryId, url); // Удаляем сайт из chrome.storage
+        };
+
+        listItem.appendChild(deleteButton); // Добавляем кнопку удаления к элементу списка
+        list.appendChild(listItem); // Добавляем элемент списка к списку
+
+        // Сохранение сайта в chrome.storage
+        chrome.storage.local.get(['categories'], (result) => {
+            const categories = result.categories || {};
+            if (!categories[currentCategoryId]) {
+                categories[currentCategoryId] = [];
+            }
+            categories[currentCategoryId].push(url);
+            chrome.storage.local.set({ categories });
+        });
+
+        document.getElementById("siteUrl").value = ''; // Очищаем поле ввода
+        modal.style.display = "none"; // Закрываем модальное окно
+    } else {
+        alert("Пожалуйста, введите корректный URL сайта."); // Сообщение об ошибке
+    }
+  };
+
+  function removeSiteFromStorage(categoryId, url) {
+    chrome.storage.local.get(['categories'], (result) => {
+      const categories = result.categories || {};
+      if (categories[categoryId]) {
+        categories[categoryId] = categories[categoryId].filter(site => site !== url);
+        chrome.storage.local.set({ categories });
+      }
+    });
+  }
+  
+  function loadSites() {
+    chrome.storage.local.get(['categories'], (result) => {
+      const categories = result.categories || {};
+      for (const [categoryId, sites] of Object.entries(categories)) {
+        const list = document.getElementById(categoryId);
+        sites.forEach(site => {
+          const listItem = document.createElement('li');
+          listItem.textContent = site;
+  
+          // Создаем кнопку удаления
+          const deleteButton = document.createElement('button');
+          deleteButton.innerHTML = '🗑️'; // Иконка корзины
+          deleteButton.className = 'delete-button';
+  
+          // Обработчик события для удаления сайта
+          deleteButton.onclick = () => {
+            list.removeChild(listItem); // Удаляем элемент из списка
+            removeSiteFromStorage(categoryId, site); // Удаляем сайт из chrome.storage
+          };
+  
+          listItem.appendChild(deleteButton); // Добавляем кнопку удаления к элементу списка
+          list.appendChild(listItem); // Добавляем элемент списка к списку
+        });
+      }
+    });
+  }
+
+  loadSites(); // Загружаем сайты при открытии страницы
 });

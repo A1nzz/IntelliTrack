@@ -1,6 +1,6 @@
-body {
+  body {
     font-family: Arial, sans-serif;
-    width: 400px;
+    width: 550px;
     background-color: #ffffff; 
     border-radius: 10px; 
     overflow: hidden; 
@@ -25,7 +25,7 @@ body {
     cursor: pointer;
     border: none;
     background-color: transparent;
-    color: #007BFF; 
+    color: #4ca1af; 
     transition: background-color 0.3s; 
   }
   
@@ -35,7 +35,7 @@ body {
   }
 
   .tab-button.active {
-    background-color: #007BFF; /* Синий фон для активной вкладки */
+    background-color: #4ca1af; /* Синий фон для активной вкладки */
     color: white; /* Белый цвет текста для активной вкладки */
   }
   
@@ -71,3 +71,113 @@ body {
   .site-item:last-child {
     border-bottom: none; /* Убрать нижнюю границу у последнего элемента */
   }
+
+  .modal {
+    display: none; /* Скрыто по умолчанию */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+  }
+  
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+  }
+  
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .delete-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: red; 
+    margin-left: 10px; 
+    font-size: 16px; 
+  }
+
+  .categories {
+    display: flex;
+    justify-content: space-between;
+    overflow-x: auto; 
+}
+
+.category {
+  background-color: #ffffff; /* Белый фон для категорий */
+  border-radius: 10px;
+  padding: 15px;
+  margin: 10px;
+  flex: 1; /* Каждый столбец занимает равное пространство */
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.site-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.site-list li {
+  display: flex;
+  align-items: center; /* Центрирование иконки и текста */
+  padding: 5px 0;
+  justify-content: space-between;
+}
+
+.site-list li:last-child {
+  border-bottom: none; /* Убрать нижнюю границу у последнего элемента */
+}
+
+.add-site-button, .modal-btn {
+  background-color: #4ca1af; /* Голубая кнопка */
+  color: white;
+  border: none;
+  border-radius: 20px; /* Закругленные кнопки */
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.3s;
+}
+
+.modal-btn {
+  padding: 10px 15px;
+  font-size: 14px;
+}
+
+.add-site-button:hover, .modal-btn:hover {
+  background-color: #3a8b95; /* Темнее при наведении */
+}
+
+.modal-input {
+  width: calc(100% - 20px);
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  font-size: 16px; /* Размер шрифта */
+}
+
+.modal-input:focus {
+  border-color: #007BFF; /* Синий цвет рамки при фокусе */
+  outline: none; /* Убираем стандартный контур */
+}
+
