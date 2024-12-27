@@ -23,22 +23,30 @@
       <div class="categories">
         <div class="category">
           <h3>Study</h3>
-          <ul class="site-list" id="category1"></ul>
-          <button class="add-site-button" data-category="category1">ADD+</button>
+          <ul class="site-list" id="Study"></ul>
+          <button class="add-site-button" data-category="Study">ADD+</button>
         </div>
         <div class="category">
           <h3>Work</h3>
-          <ul class="site-list" id="category2"></ul>
-          <button class="add-site-button" data-category="category2">ADD+</button>
+          <ul class="site-list" id="Work"></ul>
+          <button class="add-site-button" data-category="Work">ADD+</button>
         </div>
         <div class="category">
           <h3>Enterteinment</h3>
-          <ul class="site-list" id="category3"></ul>
-          <button class="add-site-button" data-category="category3">ADD+</button>
+          <ul class="site-list" id="Enterteinment"></ul>
+          <button class="add-site-button" data-category="Enterteinment">ADD+</button>
         </div>
       </div>
     </div>
     <div id="tab3" class="tab">
+      <select id="categorySelect" class="category-select">
+        <option value="" selected>All Categories</option>
+        <option value="Study">Study</option>
+        <option value="Work">Work</option>
+        <option value="Enterteinment">Entertainment</option>
+        
+      </select>
+      <button id="applyCategoryButton" class="apply-button">Apply Category</button>
       <ul id="blockedList"></ul>
       <input class="modal-input" type="text" id="blockSiteUrl" placeholder="Enter URL to block" />
       <button id="blockSiteButton" class="block-btn">Block Site</button>

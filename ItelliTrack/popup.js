@@ -173,6 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const blockedList = document.getElementById('blockedList');
   const blockSiteButton = document.getElementById('blockSiteButton');
 
+
   function loadBlockedSites() {
     chrome.storage.local.get(['blockedSites'], (result) => {
       const blockedSites = result.blockedSites || [];
@@ -245,4 +246,32 @@ document.addEventListener('DOMContentLoaded', () => {
     
   };
   loadBlockedSites(); // Загружаем заблокированные сайты при открытии страницы
+
+  const applyCategoryButton = document.getElementById('applyCategoryButton');
+  const categorySelect = document.getElementById('categorySelect');
+
+
+  applyCategoryButton.onclick = () => {
+    const selectedCategory = categorySelect.value;
+    if (selectedCategory) {
+      
+      // Получаем сайты из выбранной категории
+      chrome.storage.local.get(['categories'], (result) => {
+        const categories = result.categories || {};
+        const allowedSites = categories[selectedCategory] || [];
+  
+        // Сохраняем разрешенные сайты в chrome.storage
+        chrome.storage.local.set({ allowedSites }, () => {
+          alert(`Все сайты, кроме сайтов из категории "${selectedCategory}", будут заблокированы.`);
+          loadBlockedSites(); // Обновляем список заблокированных сайтов
+        });
+      });
+    } else {
+      chrome.storage.local.set({ allowedSites: [] }, () => {
+        alert("Никакие сайты не будут заблокированы.");
+        loadBlockedSites(); // Обновляем список заблокированных сайтов
+      });
+    }
+
+  };
 });

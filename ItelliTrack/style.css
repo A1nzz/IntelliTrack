@@ -181,3 +181,33 @@
   outline: none; /* Убираем стандартный контур */
 }
 
+.category-select {
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 100%;
+  max-width: 300px; /* Максимальная ширина */
+}
+
+.apply-button {
+  padding: 10px 15px;
+  background-color: #4ca1af; /* Зеленый цвет */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s; /* Плавный переход */
+}
+
+/* Изменение цвета кнопки при наведении */
+.apply-button:hover {
+  background-color: #3a8b95; /* Темнее при наведении */
+}
+
+/* Стили для списка заблокированных сайтов */
+#blockedList {
+  margin-top: 20px;
+}
