@@ -88,13 +88,15 @@ document.addEventListener('DOMContentLoaded', () => {
   saveSiteButton.onclick = () => {
     const url = document.getElementById("siteUrl").value.trim(); // Убираем пробелы
     const urlPattern = /^(ftp|http|https):\/\/(www\.)?[\w-]+\.[a-z]{2,}\/?([^ "]*)$/; 
-    
-    if (url && urlPattern.test(url)) { // Проверка на пустоту и корректный URL
+    const domain = new URL(url).hostname; // Получаем домен
+
+
+    if (domain && urlPattern.test(url)) { // Проверка на пустоту и корректный URL
         const list = document.getElementById(currentCategoryId);
         const listItem = document.createElement('li');
 
         // Создаем элемент для URL
-        const siteText = document.createTextNode(url);
+        const siteText = document.createTextNode(domain);
         listItem.appendChild(siteText);
 
         // Создаем кнопку удаления
@@ -105,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Обработчик события для удаления сайта
         deleteButton.onclick = () => {
             list.removeChild(listItem); // Удаляем элемент из списка
-            removeSiteFromStorage(currentCategoryId, url); // Удаляем сайт из chrome.storage
+            removeSiteFromStorage(currentCategoryId, domain); // Удаляем сайт из chrome.storage
         };
 
         listItem.appendChild(deleteButton); // Добавляем кнопку удаления к элементу списка
@@ -117,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!categories[currentCategoryId]) {
                 categories[currentCategoryId] = [];
             }
-            categories[currentCategoryId].push(url);
+            categories[currentCategoryId].push(domain);
             chrome.storage.local.set({ categories });
         });
 
@@ -166,4 +168,81 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   loadSites(); // Загружаем сайты при открытии страницы
+
+
+  const blockedList = document.getElementById('blockedList');
+  const blockSiteButton = document.getElementById('blockSiteButton');
+
+  function loadBlockedSites() {
+    chrome.storage.local.get(['blockedSites'], (result) => {
+      const blockedSites = result.blockedSites || [];
+      blockedList.innerHTML = ''; // Очистка списка
+
+      blockedSites.forEach(site => {
+        const listItem = document.createElement('li');
+        listItem.textContent = site;
+
+        // Создаем кнопку удаления
+        const deleteButton = document.createElement('button');
+        deleteButton.innerHTML = '🗑️'; // Иконка корзины
+        deleteButton.className = 'delete-button';
+
+        // Обработчик события для удаления сайта
+        deleteButton.onclick = () => {
+          blockedList.removeChild(listItem); // Удаляем элемент из списка
+          removeBlockedSite(site); // Удаляем сайт из chrome.storage
+        };
+
+        listItem.appendChild(deleteButton); // Добавляем кнопку удаления к элементу списка
+        blockedList.appendChild(listItem); // Добавляем элемент списка к списку
+      });
+    });
+  }
+
+  function removeBlockedSite(url) {
+    chrome.storage.local.get(['blockedSites'], (result) => {
+      const blockedSites = result.blockedSites || [];
+      const updatedSites = blockedSites.filter(site => site !== url);
+      chrome.storage.local.set({ blockedSites: updatedSites });
+      loadBlockedSites(); // Перезагружаем список
+    });
+  }
+
+  blockSiteButton.onclick = () => {
+    const url = document.getElementById("blockSiteUrl").value.trim(); // Убираем пробелы
+    const urlPattern = /^(ftp|http|https):\/\/(www\.)?[\w-]+\.[a-z]{2,}\/?([^ "]*)$/; 
+    const domain = new URL(url).hostname; // Получаем домен
+
+    if (domain && urlPattern.test(url)) { // Проверка на пустоту и корректный URL
+      const listItem = document.createElement('li');
+      listItem.textContent = domain;
+
+      // Создаем кнопку удаления
+      const deleteButton = document.createElement('button');
+      deleteButton.innerHTML = '🗑️'; // Иконка корзины
+      deleteButton.className = 'delete-button';
+
+      // Обработчик события для удаления сайта
+      deleteButton.onclick = () => {
+        blockedList.removeChild(listItem); // Удаляем элемент из списка
+        removeBlockedSite(domain); // Удаляем сайт из chrome.storage
+      };
+
+      listItem.appendChild(deleteButton); // Добавляем кнопку удаления к элементу списка
+      blockedList.appendChild(listItem); // Добавляем элемент списка к списку
+
+      // Сохранение заблокированного сайта в chrome.storage
+      chrome.storage.local.get(['blockedSites'], (result) => {
+        const blockedSites = result.blockedSites || [];
+        blockedSites.push(domain);
+        chrome.storage.local.set({ blockedSites });
+      });
+
+      document.getElementById("blockSiteUrl").value = ''; // Очищаем поле ввода
+    } else {
+      alert("Пожалуйста, введите корректный URL сайта."); // Сообщение об ошибке
+    }
+    
+  };
+  loadBlockedSites(); // Загружаем заблокированные сайты при открытии страницы
 });

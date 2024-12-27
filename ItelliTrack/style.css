@@ -147,7 +147,7 @@
   border-bottom: none; /* Убрать нижнюю границу у последнего элемента */
 }
 
-.add-site-button, .modal-btn {
+.add-site-button, .modal-btn, .block-btn {
   background-color: #4ca1af; /* Голубая кнопка */
   color: white;
   border: none;
@@ -158,7 +158,7 @@
   transition: background-color 0.3s;
 }
 
-.modal-btn {
+.modal-btn, .block-btn {
   padding: 10px 15px;
   font-size: 14px;
 }
